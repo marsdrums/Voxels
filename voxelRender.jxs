@@ -1,0 +1,123 @@
+<jittershader name="fill-flat-quads">
+	<description>Default Shader </description>
+	<param name="position" type="vec3" state="POSITION" />
+	<param name="modelViewProjectionMatrix" type="mat4" state="MODELVIEW_PROJECTION_MATRIX" />
+	<param name="V" type="mat4" state="VIEW_MATRIX" />
+	<param name="P" type="mat4" state="PROJECTION_MATRIX" />
+	<param name="color" type="vec4" state="COLOR" />
+	<param name="voxels" type="int" default="0" />
+	<language name="glsl" version="1.5">
+		<bind param="position" program="vp" />
+		<bind param="modelViewProjectionMatrix" program="vp" />
+		<bind param="color" program="vp" />
+		<bind param="V" program="gp" />
+		<bind param="P" program="gp" />
+		<bind param="voxels" program="gp" />
+		<program name="vp" type="vertex">
+<![CDATA[
+#version 330 core
+uniform mat4 modelViewProjectionMatrix;
+in vec3 position;
+in vec4 color;
+
+out jit_PerVertex {
+	flat vec4 color;	
+} jit_out;
+
+void main() {	
+	gl_Position = vec4(position, 1.);	
+	jit_out.color = color;
+}
+]]>
+		</program>
+		<program name="gp" vertices_out="4" input_type="lines_adjacency" output_type="triangle_strip" type="geometry">
+<![CDATA[
+#version 330 core
+
+uniform sampler3D voxels;
+uniform mat4 V, P;
+
+layout (points) in;
+layout (triangle_strip, max_vertices=128) out;
+
+in jit_PerVertex {
+	flat vec4 color;	
+} jit_in[];
+
+out jit_PerVertex {
+	flat vec4 color;	
+};
+mat3 rotate(vec3 N){
+	//returns a matrix used to orient the ray direction, so that the camera always looks at 
+	//a fixed point in space
+	vec3 a = N;
+	vec3 b = cross(a, vec3(0., 1., 0.));
+	vec3 c = cross(b, a);
+	return mat3(b, c, a);
+}
+void createFace(vec3 c, vec3 N){
+	float off = 0.1;
+	mat3 rotMat = rotate(N);
+	gl_Position = P * V * (vec4(c, 1.) + vec4(rotMat*vec3(-off, -off, 0.), 0.));
+	color = vec4(N, 1.);
+	EmitVertex();
+	gl_Position = P * V * (vec4(c, 1.) + vec4(rotMat*vec3(+off, -off, 0.), 0.));
+	color = vec4(N, 1.);
+	EmitVertex();
+	gl_Position = P * V * (vec4(c, 1.) + vec4(rotMat*vec3(-off, +off, 0.), 0.));
+	color = vec4(N, 1.);
+	EmitVertex();
+	gl_Position = P * V * (vec4(c, 1.) + vec4(rotMat*vec3(+off, +off, 0.), 0.));
+	color = vec4(N, 1.);
+	EmitVertex();
+	EndPrimitive();
+}
+void createBox(vec3 c){
+	vec3 N;
+	float off = 0.1;
+	N = vec3(+0., +0., +1.);
+	createFace(c + N*off, N);
+	N = vec3(+0., +0., -1.);
+	createFace(c + N*off, N);
+	N = vec3(+0., +1., +0.);
+	createFace(c + N*off, N);
+	N = vec3(+0., -1., +0.);
+	createFace(c + N*off, N);
+	N = vec3(+1., +0., +0.);
+	createFace(c + N*off, N);
+	N = vec3(-1., +0., +0.);
+	createFace(c + N*off, N);
+}
+
+void main() {
+
+	for(int i = 0; i < 8; i++){
+		vec3 uv = vec3( gl_in[0].gl_Position.xy, float(i)/8.);
+		bool draw = texture(voxels, uv).r > 0.;
+		if(draw){
+			uv.z = 1. - uv.z;
+			uv *= vec3(2., 2., 2.);
+			uv -= vec3(1., 1., 4.);
+			createBox(uv);
+		}
+	}
+}
+]]>
+		</program>
+		<program name="fp" type="fragment">
+<![CDATA[
+#version 330 core
+
+in jit_PerVertex {
+	flat vec4 color;
+} jit_in;
+
+out vec4 color;
+
+void main() {
+	color = jit_in.color;
+}	
+]]>
+		</program>
+	</language>
+</jittershader>

@@ -1,0 +1,55 @@
+<jittershader name="fill-flat-quads">
+	<description>Default Shader </description>
+	<param name="position" type="vec3" state="POSITION" />
+	<param name="modelViewProjectionMatrix" type="mat4" state="MODELVIEW_PROJECTION_MATRIX" />
+	<param name="color" type="vec4" state="COLOR" />
+	<param name="farClip" type="float" state="FAR_CLIP" />
+	<language name="glsl" version="1.5">
+		<bind param="position" program="vp" />
+		<bind param="modelViewProjectionMatrix" program="vp" />
+		<bind param="color" program="vp" />
+		<bind param="farClip" program="fp" />
+		<program name="vp" type="vertex">
+<![CDATA[
+#version 330 core
+uniform mat4 modelViewProjectionMatrix;
+in vec3 position;
+in vec4 color;
+
+out jit_PerVertex {
+	flat vec4 color;	
+} jit_out;
+
+void main() {	
+	gl_Position = modelViewProjectionMatrix * vec4(position, 1.);	
+	jit_out.color = color;
+}
+]]>
+		</program>
+		<program name="fp" type="fragment">
+<![CDATA[
+#version 330 core
+
+uniform float farClip;
+
+in jit_PerVertex {
+	flat vec4 color;
+} jit_in;
+
+out vec4 color[8];
+
+void main() {
+	float step = farClip/4.;
+	for(int i = 0; i < 8; i++){
+		float fi = float(i);
+		float z = gl_FragCoord.z / gl_FragCoord.w;
+		color[i].a = (z >= fi && z < (fi + step)) ? 1. : 0.;
+		color[i].rgb = vec3(1.);//vec3(sin(fi), cos(fi),sin(fi*2) );
+		//color[i].a = 1.;
+	}
+
+}	
+]]>
+		</program>
+	</language>
+</jittershader>
