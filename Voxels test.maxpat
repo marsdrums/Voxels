@@ -41,6 +41,19 @@
 		"boxes" : [ 			{
 				"box" : 				{
 					"format" : 6,
+					"id" : "obj-11",
+					"maxclass" : "flonum",
+					"numinlets" : 1,
+					"numoutlets" : 2,
+					"outlettype" : [ "", "bang" ],
+					"parameter_enable" : 0,
+					"patching_rect" : [ 588.0, 123.0, 50.0, 22.0 ]
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"format" : 6,
 					"id" : "obj-70",
 					"maxclass" : "flonum",
 					"numinlets" : 1,
@@ -167,8 +180,8 @@
 					"numinlets" : 6,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 497.0, 163.0, 98.0, 22.0 ],
-					"text" : "scale -1. 1. 0. -6."
+					"patching_rect" : [ 497.0, 163.0, 94.0, 22.0 ],
+					"text" : "scale -1. 1. 0. 0."
 				}
 
 			}
@@ -514,7 +527,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 2,
 					"outlettype" : [ "jit_gl_texture", "" ],
-					"patching_rect" : [ 443.0, 237.0, 313.0, 22.0 ],
+					"patching_rect" : [ 441.0, 230.0, 313.0, 22.0 ],
 					"text" : "jit.gl.camera vox @near_clip 0.001 @far_clip 8. @ortho 2"
 				}
 
@@ -767,8 +780,8 @@
 					"numinlets" : 1,
 					"numoutlets" : 2,
 					"outlettype" : [ "jit_matrix", "" ],
-					"patching_rect" : [ 227.5, 274.0, 583.0, 22.0 ],
-					"text" : "jit.gl.gridshape @shape torus @position 0. 0. -3.5 @shader testVoxels @blend_enable 1 @scale 0.5 0.5 0.5"
+					"patching_rect" : [ 227.5, 274.0, 850.0, 22.0 ],
+					"text" : "jit.gl.gridshape @shape torus @position 0. 0. -3.5 @shader testVoxels @blend_enable 1 @scale 0.5 0.5 0.5 @depth_enable 0 @depth_write 0 @dim 100 100"
 				}
 
 			}
@@ -816,7 +829,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 1033.0, 67.0, 214.0, 22.0 ]
+					"patching_rect" : [ 1051.0, 127.0, 214.0, 22.0 ]
 				}
 
 			}
@@ -837,6 +850,13 @@
 				"patchline" : 				{
 					"destination" : [ "obj-9", 0 ],
 					"source" : [ "obj-10", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-48", 4 ],
+					"source" : [ "obj-11", 0 ]
 				}
 
 			}

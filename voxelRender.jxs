@@ -58,6 +58,7 @@ mat3 rotate(vec3 N){
 }
 void createFace(vec3 c, vec3 N){
 	mat3 rotMat = rotate(N);
+	N = N*0.5 + 0.5;
 	gl_Position = P * V * (vec4(c, 1.) + vec4(rotMat*vec3(-off, -off, 0.), 0.));
 	color = vec4(N, 1.);
 	EmitVertex();

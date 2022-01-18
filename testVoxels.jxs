@@ -21,7 +21,7 @@ out jit_PerVertex {
 } jit_out;
 
 void main() {	
-
+ 	vec3 grid = floor(position*4.) / 4.;
 	gl_Position = MVP * vec4(position, 1.);//vec4( (MVP * vec4(position, 1.)).xyz, 1.);	
 	jit_out.color = color;
 }
@@ -40,6 +40,19 @@ in jit_PerVertex {
 out vec4 color[8];
 
 void main() {
+
+	for(int i = 0; i < 8; i++){
+		color[i] = vec4(0.);
+	}
+
+	float 	z = gl_FragCoord.z / gl_FragCoord.w;
+			z *= 16.;
+
+	int 	index = int(floor(z));
+			color[index].rgb = vec3(1.);
+			color[index].a = 1.;
+
+	/*
 	float step = 1. / 8.;
 	for(int i = 0; i < 8; i++){
 		float fi = float(i)/8.;
@@ -47,7 +60,7 @@ void main() {
 		color[i].a = (z >= fi && z < (fi + step)) ? 1. : 0.;
 		color[i].rgb = vec3(1.);
 	}
-
+*/
 }	
 ]]>
 		</program>
