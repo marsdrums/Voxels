@@ -33,6 +33,7 @@ void main() {
 		<program name="gp" vertices_out="4" input_type="lines_adjacency" output_type="triangle_strip" type="geometry">
 <![CDATA[
 #version 330 core
+#define off 0.13
 
 uniform sampler3D voxels;
 uniform mat4 V, P;
@@ -56,7 +57,6 @@ mat3 rotate(vec3 N){
 	return mat3(b, c, a);
 }
 void createFace(vec3 c, vec3 N){
-	float off = 0.1;
 	mat3 rotMat = rotate(N);
 	gl_Position = P * V * (vec4(c, 1.) + vec4(rotMat*vec3(-off, -off, 0.), 0.));
 	color = vec4(N, 1.);
@@ -74,7 +74,6 @@ void createFace(vec3 c, vec3 N){
 }
 void createBox(vec3 c){
 	vec3 N;
-	float off = 0.1;
 	N = vec3(+0., +0., +1.);
 	createFace(c + N*off, N);
 	N = vec3(+0., +0., -1.);
@@ -97,7 +96,7 @@ void main() {
 		if(draw){
 			uv.z = 1. - uv.z;
 			uv *= vec3(2., 2., 2.);
-			uv -= vec3(1., 1., 4.);
+			uv -= vec3(1., 1., 2.);
 			createBox(uv);
 		}
 	}
