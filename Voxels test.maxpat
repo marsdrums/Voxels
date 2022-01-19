@@ -40,6 +40,18 @@
 		"assistshowspatchername" : 0,
 		"boxes" : [ 			{
 				"box" : 				{
+					"fontsize" : 19.238604098820478,
+					"id" : "obj-53",
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 503.0, 127.660377358490564, 82.0, 29.0 ],
+					"text" : "<- start!!"
+				}
+
+			}
+, 			{
+				"box" : 				{
 					"fontsize" : 16.314818262599228,
 					"id" : "obj-49",
 					"linecount" : 2,
@@ -854,7 +866,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 52.5, 312.0, 150.0, 22.0 ]
+					"patching_rect" : [ 98.5, 316.0, 150.0, 22.0 ]
 				}
 
 			}
