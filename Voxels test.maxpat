@@ -41,6 +41,19 @@
 		"boxes" : [ 			{
 				"box" : 				{
 					"fontsize" : 19.238604098820478,
+					"id" : "obj-54",
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 531.5, 443.0, 122.0, 29.0 ],
+					"presentation_linecount" : 2,
+					"text" : "<- look inside"
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"fontsize" : 19.238604098820478,
 					"id" : "obj-53",
 					"maxclass" : "comment",
 					"numinlets" : 1,
@@ -788,6 +801,7 @@
 			}
 , 			{
 				"box" : 				{
+					"bgcolor" : [ 0.980392156862745, 0.019607843137255, 0.019607843137255, 1.0 ],
 					"id" : "obj-7",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
