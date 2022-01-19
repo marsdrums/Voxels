@@ -41,26 +41,28 @@ out vec4 color[8];
 
 void main() {
 
-	for(int i = 0; i < 8; i++){
-		color[i] = vec4(0.);
-	}
+//the voxelization process I'm trying to implement works like this:
+//1) define a voxel grid (here 8x8x8)
+//2) rasterize the scene using an orthographic projection, making
+//   the size of the viewport coincide with the size of the voxel grid
+//   (this part could be done way better...)
+//3) "peel" the scene along the z axis and fill the alpha channel of the
+//   texture if there is a polygon in corrispondance of that voxel
 
-	float 	z = gl_FragCoord.z / gl_FragCoord.w;
-			z *= 16.;
-
-	int 	index = int(floor(z));
-			color[index].rgb = vec3(1.);
-			color[index].a = 1.;
-
-	/*
+//Here is where i got stucked:
+//to fill the 3D texture, i'm sending out 8 2D textures, setting the value 1. in the 
+//alpha plane of the voxel texture where a polygon is present. 
+//This limits the definition of the grid, since the output array can contain 
+//only 8 elements (layers). The ideal thing would be to write these values 
+//into a 3D texture directly from the fragment shader
 	float step = 1. / 8.;
 	for(int i = 0; i < 8; i++){
-		float fi = float(i)/8.;
+		float fi = float(i)/16.;
 		float z = gl_FragCoord.z / gl_FragCoord.w;
 		color[i].a = (z >= fi && z < (fi + step)) ? 1. : 0.;
 		color[i].rgb = vec3(1.);
 	}
-*/
+
 }	
 ]]>
 		</program>
