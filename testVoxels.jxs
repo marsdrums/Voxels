@@ -3,11 +3,13 @@
 	<param name="position" type="vec3" state="POSITION" />
 	<param name="MVP" type="mat4" state="MODELVIEW_PROJECTION_MATRIX" />
 	<param name="color" type="vec4" state="COLOR" />
+	<param name="nearClip" type="float" state="NEAR_CLIP" />
 	<param name="farClip" type="float" state="FAR_CLIP" />
 	<language name="glsl" version="1.5">
 		<bind param="position" program="vp" />
 		<bind param="MVP" program="vp" />
 		<bind param="color" program="vp" />
+		<bind param="nearClip" program="fp" />
 		<bind param="farClip" program="fp" />
 		<program name="vp" type="vertex">
 <![CDATA[
@@ -21,8 +23,8 @@ out jit_PerVertex {
 } jit_out;
 
 void main() {	
- 	vec3 grid = floor(position*4.) / 4.;
-	gl_Position = MVP * vec4(position, 1.);//vec4( (MVP * vec4(position, 1.)).xyz, 1.);	
+
+	gl_Position = MVP * vec4(position, 1.);
 	jit_out.color = color;
 }
 ]]>
@@ -31,38 +33,39 @@ void main() {
 <![CDATA[
 #version 330 core
 
-uniform float farClip;
+uniform float nearClip, farClip;
 
 in jit_PerVertex {
 	flat vec4 color;
 } jit_in;
 
 out vec4 color[8];
-
+float LinearizeDepth(float depth) 
+{
+    float z = depth * 2.0 - 1.0; // back to NDC 
+    return (2.0 * nearClip * farClip) / (farClip + nearClip - z * (farClip - nearClip));	
+}
 void main() {
 
-//the voxelization process I'm trying to implement works like this:
-//1) define a voxel grid (here 8x8x8)
-//2) rasterize the scene using an orthographic projection, making
-//   the size of the viewport coincide with the size of the voxel grid
-//   (this part could be done way better...)
-//3) "peel" the scene along the z axis and fill the alpha channel of the
-//   texture if there is a polygon in corrispondance of that voxel
 
-//Here is where i got stucked:
+
+//Here is where i got stuck:
 //to fill the 3D texture, i'm sending out 8 2D textures, setting the value 1. in the 
 //alpha plane of the voxel texture where a polygon is present. 
 //This limits the definition of the grid, since the output array can contain 
 //only 8 elements (layers). The ideal thing would be to write these values 
 //into a 3D texture directly from the fragment shader
-	float step = 1. / 8.;
-	for(int i = 0; i < 8; i++){
-		float fi = float(i)/16.;
-		float z = gl_FragCoord.z / gl_FragCoord.w;
-		color[i].a = (z >= fi && z < (fi + step)) ? 1. : 0.;
-		color[i].rgb = vec3(1.);
-	}
 
+	float z = 2*gl_FragCoord.z - 1.;
+	float step = 1. / (farClip - nearClip);
+	float z0 = 0.;
+	float z1;
+	for(int i = 0; i < 8; i++){
+		z1 = z0 + step;
+		color[i] = z >= z0 && z < z1 ? vec4(1) : vec4(0.);
+		z0 = z1;
+
+	}
 }	
 ]]>
 		</program>

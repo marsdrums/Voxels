@@ -3,14 +3,14 @@
 		"fileversion" : 1,
 		"appversion" : 		{
 			"major" : 8,
-			"minor" : 2,
-			"revision" : 1,
+			"minor" : 3,
+			"revision" : 0,
 			"architecture" : "x64",
 			"modernui" : 1
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 870.0, 297.0, 1321.0, 983.0 ],
+		"rect" : [ 994.0, 272.0, 1495.0, 983.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -45,8 +45,8 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 631.0, 238.0, 80.0, 22.0 ],
-					"text" : "loadmess 0.5"
+					"patching_rect" : [ 631.0, 281.0, 80.0, 22.0 ],
+					"text" : "loadmess 0.7"
 				}
 
 			}
@@ -82,7 +82,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 52.5, 36.217280813214757, 1006.0, 44.0 ],
+					"patching_rect" : [ 60.0, 30.217280813214757, 1006.0, 44.0 ],
 					"text" : "To create a detailed voxelisation, I'd need to fill the 3D texture (named \"voxels\") from the fragment shader (named \"testVoxels\").\nLook inside the shader for more details"
 				}
 
@@ -109,7 +109,7 @@
 					"numoutlets" : 2,
 					"outlettype" : [ "", "bang" ],
 					"parameter_enable" : 0,
-					"patching_rect" : [ 631.0, 277.0, 50.0, 22.0 ]
+					"patching_rect" : [ 631.0, 320.0, 50.0, 22.0 ]
 				}
 
 			}
@@ -120,7 +120,7 @@
 					"numinlets" : 2,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 631.0, 316.0, 87.0, 22.0 ],
+					"patching_rect" : [ 631.0, 359.0, 87.0, 22.0 ],
 					"text" : "scale $1 $1 $1"
 				}
 
@@ -176,13 +176,12 @@
 , 			{
 				"box" : 				{
 					"id" : "obj-59",
-					"linecount" : 4,
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 2,
 					"outlettype" : [ "jit_gl_texture", "" ],
-					"patching_rect" : [ 756.5, 182.0, 184.0, 64.0 ],
-					"text" : "jit.gl.camera see @near_clip 0.001 @far_clip 100. @ortho 0 @locklook 1 @lookat 0. 0. -2. @position 2 0. 2."
+					"patching_rect" : [ 756.5, 182.0, 577.0, 22.0 ],
+					"text" : "jit.gl.camera see @near_clip 0.001 @far_clip 100. @ortho 0 @locklook 1 @lookat 0. 0. 0. @position 2 0. 6."
 				}
 
 			}
@@ -363,14 +362,14 @@
 						"fileversion" : 1,
 						"appversion" : 						{
 							"major" : 8,
-							"minor" : 2,
-							"revision" : 1,
+							"minor" : 3,
+							"revision" : 0,
 							"architecture" : "x64",
 							"modernui" : 1
 						}
 ,
 						"classnamespace" : "jit.gen",
-						"rect" : [ -39.0, 677.0, 600.0, 450.0 ],
+						"rect" : [ 1120.0, 575.0, 600.0, 450.0 ],
 						"bglocked" : 0,
 						"openinpresentation" : 0,
 						"default_fontsize" : 12.0,
@@ -781,7 +780,7 @@
 					"numoutlets" : 3,
 					"outlettype" : [ "jit_gl_texture", "", "" ],
 					"patching_rect" : [ 60.0, 254.0, 376.0, 22.0 ],
-					"text" : "jit.gl.node vox @capture 8 @dim 8 8 @adapt 0 @erase_color 0 0 0 1"
+					"text" : "jit.gl.node vox @capture 8 @dim 8 8 @adapt 0 @erase_color 0 0 0 0"
 				}
 
 			}
@@ -802,13 +801,13 @@
 , 			{
 				"box" : 				{
 					"id" : "obj-6",
-					"linecount" : 5,
+					"linecount" : 8,
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 2,
 					"outlettype" : [ "jit_matrix", "" ],
-					"patching_rect" : [ 238.5, 403.0, 216.0, 77.0 ],
-					"text" : "jit.gl.gridshape @shape torus @position 0. 0. -3.5 @shader testVoxels @blend_enable 1 @scale 0.5 0.5 0.5 @depth_enable 0 @depth_write 0 @dim 100 100"
+					"patching_rect" : [ 238.5, 398.5, 142.0, 119.0 ],
+					"text" : "jit.gl.gridshape @shape torus @position 0. 0. -4. @shader testVoxels @blend_enable 1 @scale 0.5 0.5 0.5 @depth_enable 1 @depth_write 0 @dim 100 100 @texture voxels"
 				}
 
 			}
@@ -843,8 +842,8 @@
 					"numinlets" : 1,
 					"numoutlets" : 2,
 					"outlettype" : [ "jit_gl_texture", "" ],
-					"patching_rect" : [ 60.0, 673.0, 474.0, 22.0 ],
-					"text" : "jit.gl.texture see @dim 8 8 8 @type float32 @rectangle 0 @filter nearest @name voxels"
+					"patching_rect" : [ 60.0, 673.0, 488.0, 22.0 ],
+					"text" : "jit.gl.texture see @dim 32 32 8 @type float32 @rectangle 0 @filter nearest @name voxels"
 				}
 
 			}
@@ -857,7 +856,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 756.5, 138.0, 296.0, 29.0 ]
+					"patching_rect" : [ 756.5, 131.0, 296.0, 29.0 ]
 				}
 
 			}
@@ -869,7 +868,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 98.5, 322.0, 156.0, 22.0 ]
+					"patching_rect" : [ 86.5, 322.0, 156.0, 22.0 ]
 				}
 
 			}
@@ -1156,13 +1155,6 @@
 				"patchline" : 				{
 					"destination" : [ "obj-3", 0 ],
 					"source" : [ "obj-5", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-6", 0 ],
-					"source" : [ "obj-50", 0 ]
 				}
 
 			}

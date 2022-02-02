@@ -33,7 +33,7 @@ void main() {
 		<program name="gp" vertices_out="4" input_type="lines_adjacency" output_type="triangle_strip" type="geometry">
 <![CDATA[
 #version 330 core
-#define off 0.13
+#define off 0.12
 
 uniform sampler3D voxels;
 uniform mat4 V, P;
@@ -89,17 +89,24 @@ void createBox(vec3 c){
 	createFace(c + N*off, N);
 }
 
+void createPoint(vec3 pos){
+	gl_Position = P * V * vec4(pos, 0.);
+	color = vec4(1.);
+	EmitVertex();
+	EndPrimitive();
+}
+
 void main() {
 
 	for(int i = 0; i < 8; i++){
 		vec3 uv = vec3( gl_in[0].gl_Position.xy, float(i)/8.);
+			uv += vec3(0.5/8.);
 		bool draw = texture(voxels, uv).r > 0.;
-		if(draw){
-			uv.z = 1. - uv.z;
-			uv *= vec3(2., 2., 2.);
-			uv -= vec3(1., 1., 2.);
-			createBox(uv);
-		}
+				uv.xy *= 2.;
+				uv.xy -= 1.;
+				uv.z = 1. - uv.z;
+				uv.z *= 2.;
+		if(draw){ createBox(uv);	}
 	}
 }
 ]]>
